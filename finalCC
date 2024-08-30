@@ -1,0 +1,40 @@
+import hashlib
+
+# Función para hash de contraseñas
+def hash_password(password):
+    """Genera un hash seguro para la contraseña."""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+# Función para verificar la contraseña
+def verify_password(stored_hash, password):
+    """Verifica si la contraseña proporcionada coincide con el hash almacenado."""
+    return stored_hash == hash_password(password)
+
+# Diccionario de usuarios y contraseñas (hash)
+users = {
+    "Crhis06": hash_password("12345@")
+}
+
+# Número máximo de intentos
+max_intentos = 3
+
+# Bucle para manejar múltiples intentos de inicio de sesión
+for intento in range(max_intentos):
+    print("Bienvenido, ingresa tu usuario")
+    user = input("Usuario: ")
+
+    print("Contraseña: ")
+    pwd = input()
+
+    if user in users and verify_password(users[user], pwd):
+        print("Bienvenido de vuelta", user)
+        break  # Salir del bucle si el inicio de sesión es exitoso
+    else:
+        print("Usuario o contraseña incorrectos")
+        if intento < max_intentos - 1:
+            print("Tienes", max_intentos - (intento + 1), "intentos restantes")
+        else:
+            print("Has agotado el número máximo de intentos. Por favor, intenta más tarde.")
+
+# Este bloque se ejecuta después de salir del bucle
+print("Fin del proceso de inicio de sesión.")
